@@ -4855,10 +4855,12 @@ class ZoneInfoCompleteTest(unittest.TestSuite):
         tests = []
         if is_resource_enabled('tzdata'):
             for name in ZoneInfo.zonenames():
-                Test = type('ZoneInfoTest[%s]' % name, (ZoneInfoTest,), {})
-                Test.zonename = name
-                for method in dir(Test):
+                for method in dir(ZoneInfoTest):
                     if method.startswith('test_'):
+                        Test = type('ZoneInfoTest[%s]' % name,
+                                    (ZoneInfoTest,),
+                                    {})
+                        Test.zonename = name
                         tests.append(Test(method))
         super().__init__(tests)
 

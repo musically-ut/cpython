@@ -29,8 +29,10 @@ for module, suffix in zip(test_modules, test_suffixes):
             continue
         if issubclass(cls, unittest.TestCase):
             test_classes.append(cls)
+            all_test_classes.append(cls)
         elif issubclass(cls, unittest.TestSuite):
             suit = cls()
+            all_test_classes.append(suit)
             test_classes.extend(type(test) for test in suit)
     test_classes = sorted(set(test_classes), key=lambda cls: cls.__qualname__)
     for cls in test_classes:
@@ -48,7 +50,6 @@ for module, suffix in zip(test_modules, test_suffixes):
             sys.modules.update(cls_._save_sys_modules)
         cls.setUpClass = setUpClass
         cls.tearDownClass = tearDownClass
-    all_test_classes.extend(test_classes)
 
 def test_main():
     run_unittest(*all_test_classes)
